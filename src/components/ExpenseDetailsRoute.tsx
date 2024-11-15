@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { client } from "../util/roger-api-client";
+import { client, ExpenseStatus } from "../util/roger-api-client";
 
 // interface Expense {
 //   id: number;
@@ -28,11 +28,39 @@ const ExpenseDetailsRoute: React.FC = () => {
   return (
     <div>
       <h2>Expense Detail</h2>
-      <p><strong>Name:</strong> {expense.filename}</p>
-      <p><strong>Amount:</strong> ${expense.amount}</p>
-      <p><strong>Vendor:</strong> {expense.status}</p>
-      <p><strong>Vendor:</strong> {expense.vendorName}</p>
-      <p><strong>Date:</strong> {expense.createdAt}</p>
+      <p>
+        <strong>Name:</strong> {expense.filename}
+      </p>
+      <p>
+        <strong>Amount:</strong> ${expense.amount}
+      </p>
+      <p>
+        <strong>Vendor:</strong> {expense.status}
+      </p>
+      <p>
+        <strong>Vendor:</strong> {expense.vendorName}
+      </p>
+      <p>
+        <strong>Date:</strong> {expense.createdAt}
+      </p>
+      <button
+        onClick={async () => {
+          await client.patchExpense(id, { status: ExpenseStatus.PAID });
+          setExpense({ ...expense, status: "Paid" });
+        }}
+      >
+        Pay
+      </button>
+      <button
+        onClick={async () => {
+          if (window.confirm("Are you sure you want to delete this expense?")) {
+            await client.deleteExpense(id);
+            setExpense(null);
+          }
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 };
