@@ -3,6 +3,7 @@ import { client } from "../util/roger-api-client";
 
 const ExpenseListRoute: React.FC = () => {
   const [expenses, setExpenses] = useState<any[]>([]);
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -29,6 +30,7 @@ const ExpenseListRoute: React.FC = () => {
                     ...exp,
                     status: details.status,
                     amount: details.amount,
+                    id: details.id,
                   }
                 : exp
             )
@@ -61,12 +63,9 @@ const ExpenseListRoute: React.FC = () => {
       <ul>
         {expenses.map((expense) => (
           <li key={expense.id}>
+            <a href={`/expenses/${expense.id}`}>{expense.name}</a>
             <p>Name: {expense.name}</p>
             <p>Status: {expense.status}</p>
-            <p>Created At: {expense.createdAt}</p>
-            <p>Vendor Name: {expense.vendorName}</p>
-            <p>Amount: {expense.amount}</p>
-            <p>Filename: {expense.filename}</p>
           </li>
         ))}
       </ul>
