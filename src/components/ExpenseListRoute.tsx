@@ -71,17 +71,46 @@ const ExpenseListRoute: React.FC = () => {
 
   return (
     <>
-      <h1>Expenses</h1>
-      <input type="file" multiple onChange={handleFileUpload} />
-      <ul>
-        {expenses?.map((expense) => (
-          <li key={expense.id}>
-            <Link to={`/expenses/${expense.id}`}>{expense.filename}</Link>
-            <p>Name: {expense.filename}</p>
-            <p>Status: {expense.status}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="container mt-4">
+        <h1 className="mb-4">Expenses</h1>
+        <div className="mb-3">
+          <input
+            type="file"
+            multiple
+            onChange={handleFileUpload}
+            className="form-control"
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            type="text"
+            placeholder="Search expenses"
+            className="form-control"           
+          />
+        </div>
+        <div
+          className="list-group"
+          style={{ maxHeight: "800px", overflowY: "auto" }}
+        >
+          {expenses?.map((expense) => (
+            <Link
+              key={expense.id}
+              to={`/expenses/${expense.id}`}
+              className="list-group-item text-decoration-none"
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 className="mb-1">{expense.filename}</h5>
+                  <p className="mb-1">Status: {expense.status}</p>
+                </div>
+                <span className="badge bg-primary rounded-pill">
+                  {expense.amount}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 };
