@@ -108,54 +108,66 @@ const ExpenseListRoute: React.FC = () => {
           className="list-group"
           style={{ maxHeight: "800px", overflowY: "auto" }}
         >
-          {expenses
-            ?.filter((expense) =>
-              expense.filename.toLowerCase().includes(searchTerm)
-            )
-            .map((expense) => {
-              let statusColor;
-              switch (expense.status) {
-                case ExpenseStatus.ANALYZING:
-                  statusColor = "text-info";
-                  break;
-                case ExpenseStatus.PAID:
-                  statusColor = "text-success";
-                  break;
-                case ExpenseStatus.UNPAID:
-                  statusColor = "text-danger";
-                  break;
-                default:
-                  statusColor = "text-secondary";
-              }
-              return (
-                <Link
-                  key={expense.id}
-                  to={`/expenses/${expense.id}`}
-                  className="list-group-item list-group-item-action flex-column align-items-start"
-                  style={{ backgroundColor: "#f0f4f8", borderColor: "#d1e3f0" }}
-                >
-                  <div className="d-flex w-100 justify-content-between">
-                    <h5 className="mb-1 text-primary">
-                      <FaFileInvoiceDollar /> {expense.filename}
-                    </h5>
-                    <small className="text-muted">{expense.createdAt}</small>
-                  </div>
-                  <p>
-                    Status:{" "}
-                    <span className={`mb-1 ${statusColor}`}>
-                      {expense.status}
-                    </span>
-                  </p>
-                  <small className="text-muted">
-                    Vendor: {expense.vendorName}
-                  </small>
-                  <span className="badge bg-primary rounded-pill float-end">
-                    <FaDollarSign />
-                    {expense.amount ?? 0}
-                  </span>
-                </Link>
-              );
-            })}
+          {Object.values(ExpenseStatus).map((status) => (
+            <div key={status}>
+              <h3 className="text-secondary">{status}</h3>
+              {expenses
+                ?.filter(
+                  (expense) =>
+                    expense.status === status &&
+                    expense.filename.toLowerCase().includes(searchTerm)
+                )
+                .map((expense) => {
+                  let statusColor;
+                  switch (expense.status) {
+                    case ExpenseStatus.ANALYZING:
+                      statusColor = "text-info";
+                      break;
+                    case ExpenseStatus.PAID:
+                      statusColor = "text-success";
+                      break;
+                    case ExpenseStatus.UNPAID:
+                      statusColor = "text-danger";
+                      break;
+                    default:
+                      statusColor = "text-secondary";
+                  }
+                  return (
+                    <Link
+                      key={expense.id}
+                      to={`/expenses/${expense.id}`}
+                      className="list-group-item list-group-item-action flex-column align-items-start"
+                      style={{
+                        backgroundColor: "#f0f4f8",
+                        borderColor: "#d1e3f0",
+                      }}
+                    >
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1 text-primary">
+                          <FaFileInvoiceDollar /> {expense.filename}
+                        </h5>
+                        <small className="text-muted">
+                          {expense.createdAt}
+                        </small>
+                      </div>
+                      <p>
+                        Status:{" "}
+                        <span className={`mb-1 ${statusColor}`}>
+                          {expense.status}
+                        </span>
+                      </p>
+                      <small className="text-muted">
+                        Vendor: {expense.vendorName}
+                      </small>
+                      <span className="badge bg-primary rounded-pill float-end">
+                        <FaDollarSign />
+                        {expense.amount ?? 0}
+                      </span>
+                    </Link>
+                  );
+                })}
+            </div>
+          ))}
         </div>
       </div>
     </>
