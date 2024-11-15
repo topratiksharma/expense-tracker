@@ -79,96 +79,104 @@ const ExpenseListRoute: React.FC = () => {
   return (
     <>
       <div className="container mt-4">
-        <h1 className="mb-4 text-center text-primary">Expenses</h1>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaFileUpload /> Upload Files
-          </label>
-          <input
-            type="file"
-            multiple
-            onChange={handleFileUpload}
-            className="form-control form-control-lg"
-          />
+      <h1 className="mb-4 text-center text-dark">Expenses</h1>
+      <div className="mb-3">
+        <label className="form-label fw-bold">
+        <FaFileUpload /> Upload Files
+        </label>
+        <input
+        type="file"
+        multiple
+        onChange={handleFileUpload}
+        className="form-control rounded"
+        />
+      </div>
+      <div className="mb-3">
+        <label className="form-label fw-bold">
+        <FaSearch /> Search Expenses
+        </label>
+        <input
+        type="text"
+        placeholder="Search expenses"
+        className="form-control rounded"
+        onChange={(e) => {
+          setSearchTerm(e.target.value.toLowerCase());
+        }}
+        />
+      </div>
+      <div
+        className="list-group rounded"
+        style={{ maxHeight: "800px", overflowY: "auto" }}
+      >
+        {!expenses ? (
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label">
-            <FaSearch /> Search Expenses
-          </label>
-          <input
-            type="text"
-            placeholder="Search expenses"
-            className="form-control form-control-lg"
-            onChange={(e) => {
-              setSearchTerm(e.target.value.toLowerCase());
-            }}
-          />
-        </div>
-        <div
-          className="list-group"
-          style={{ maxHeight: "800px", overflowY: "auto" }}
-        >
-          {Object.values(ExpenseStatus).map((status) => (
-            <div key={status}>
-              <h3 className="text-secondary">{status}</h3>
-              {expenses
-                ?.filter(
-                  (expense) =>
-                    expense.status === status &&
-                    expense.filename.toLowerCase().includes(searchTerm)
-                )
-                .map((expense) => {
-                  let statusColor;
-                  switch (expense.status) {
-                    case ExpenseStatus.ANALYZING:
-                      statusColor = "text-info";
-                      break;
-                    case ExpenseStatus.PAID:
-                      statusColor = "text-success";
-                      break;
-                    case ExpenseStatus.UNPAID:
-                      statusColor = "text-danger";
-                      break;
-                    default:
-                      statusColor = "text-secondary";
-                  }
-                  return (
-                    <Link
-                      key={expense.id}
-                      to={`/expenses/${expense.id}`}
-                      className="list-group-item list-group-item-action flex-column align-items-start"
-                      style={{
-                        backgroundColor: "#f0f4f8",
-                        borderColor: "#d1e3f0",
-                      }}
-                    >
-                      <div className="d-flex w-100 justify-content-between">
-                        <h5 className="mb-1 text-primary">
-                          <FaFileInvoiceDollar /> {expense.filename}
-                        </h5>
-                        <small className="text-muted">
-                          {expense.createdAt}
-                        </small>
-                      </div>
-                      <p>
-                        Status:{" "}
-                        <span className={`mb-1 ${statusColor}`}>
-                          {expense.status}
-                        </span>
-                      </p>
-                      <small className="text-muted">
-                        Vendor: {expense.vendorName}
-                      </small>
-                      <span className="badge bg-primary rounded-pill float-end">
-                        <FaDollarSign />
-                        {expense.amount ?? 0}
-                      </span>
-                    </Link>
-                  );
-                })}
-            </div>
-          ))}
-        </div>
+        ) : (
+        Object.values(ExpenseStatus).map((status) => (
+          <div key={status}>
+          <h3 className="text-secondary">{status}</h3>
+          {expenses
+            .filter(
+            (expense) =>
+              expense.status === status &&
+              expense.filename.toLowerCase().includes(searchTerm)
+            )
+            .map((expense) => {
+            let statusColor;
+            switch (expense.status) {
+              case ExpenseStatus.ANALYZING:
+              statusColor = "text-info";
+              break;
+              case ExpenseStatus.PAID:
+              statusColor = "text-success";
+              break;
+              case ExpenseStatus.UNPAID:
+              statusColor = "text-danger";
+              break;
+              default:
+              statusColor = "text-secondary";
+            }
+            return (
+              <Link
+              key={expense.id}
+              to={`/expenses/${expense.id}`}
+              className="list-group-item list-group-item-action flex-column align-items-start rounded"
+              style={{
+                backgroundColor: "#ffffff",
+                borderColor: "#e0e0e0",
+              }}
+              >
+              <div className="d-flex w-100 justify-content-between">
+                <h5 className="mb-1 text-dark">
+                <FaFileInvoiceDollar /> {expense.filename}
+                </h5>
+                <small className="text-muted">
+                {expense.createdAt}
+                </small>
+              </div>
+              <p>
+                Status:{" "}
+                <span className={`mb-1 ${statusColor}`}>
+                {expense.status}
+                </span>
+              </p>
+              <small className="text-muted">
+                Vendor: {expense.vendorName}
+              </small>
+              <span className="badge bg-primary rounded-pill float-end">
+                <FaDollarSign />
+                {expense.amount ?? 0}
+              </span>
+              </Link>
+            );
+            })}
+          </div>
+        ))
+        )}
+      </div>
       </div>
     </>
   );
