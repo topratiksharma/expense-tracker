@@ -4,6 +4,7 @@ import { client, Expense, ExpenseStatus } from "../util/roger-api-client";
 
 const ExpenseListRoute: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   React.useEffect(() => {
     const fetchExpenses = async () => {
@@ -85,30 +86,37 @@ const ExpenseListRoute: React.FC = () => {
           <input
             type="text"
             placeholder="Search expenses"
-            className="form-control"           
+            className="form-control"
+            onChange={(e) => {
+              setSearchTerm(e.target.value.toLowerCase());
+            }}
           />
         </div>
         <div
           className="list-group"
           style={{ maxHeight: "800px", overflowY: "auto" }}
         >
-          {expenses?.map((expense) => (
-            <Link
-              key={expense.id}
-              to={`/expenses/${expense.id}`}
-              className="list-group-item text-decoration-none"
-            >
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 className="mb-1">{expense.filename}</h5>
-                  <p className="mb-1">Status: {expense.status}</p>
+          {expenses
+            ?.filter((expense) =>
+              expense.filename.toLowerCase().includes(searchTerm)
+            )
+            .map((expense) => (
+              <Link
+                key={expense.id}
+                to={`/expenses/${expense.id}`}
+                className="list-group-item text-decoration-none"
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h5 className="mb-1">{expense.filename}</h5>
+                    <p className="mb-1">Status: {expense.status}</p>
+                  </div>
+                  <span className="badge bg-primary rounded-pill">
+                    {expense.amount}
+                  </span>
                 </div>
-                <span className="badge bg-primary rounded-pill">
-                  {expense.amount}
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
         </div>
       </div>
     </>
