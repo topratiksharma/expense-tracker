@@ -1,12 +1,12 @@
-import React from 'react'
-import {Router, Switch, Route, Redirect, NavLink} from 'react-router-dom'
-import {createBrowserHistory} from 'history'
-import {ReactComponent as Logo} from '../images/logo-negative.svg'
+import React from "react";
+import { Router, Switch, Route, Redirect, NavLink } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import { ReactComponent as Logo } from "../images/logo-negative.svg";
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
-const ExpenseListRoute = React.lazy(() => import('./ExpenseListRoute'))
-const SettingsRoute = React.lazy(() => import('./SettingsRoute'))
+const ExpenseListRoute = React.lazy(() => import("./ExpenseListRoute"));
+const SettingsRoute = React.lazy(() => import("./SettingsRoute"));
 
 export const App: React.FC = () => {
   return (
@@ -46,5 +46,5 @@ export const App: React.FC = () => {
         </React.Suspense>
       </main>
     </Router>
-  )
-}
+  );
+};
