@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { client, Expense, ExpenseStatus } from "../util/roger-api-client";
+import {
+  FaFileUpload,
+  FaSearch,
+  FaFileInvoiceDollar,
+  FaDollarSign,
+} from "react-icons/fa";
 
 const ExpenseListRoute: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>();
@@ -73,20 +79,26 @@ const ExpenseListRoute: React.FC = () => {
   return (
     <>
       <div className="container mt-4">
-        <h1 className="mb-4">Expenses</h1>
+        <h1 className="mb-4 text-center text-primary">Expenses</h1>
         <div className="mb-3">
+          <label className="form-label">
+            <FaFileUpload /> Upload Files
+          </label>
           <input
             type="file"
             multiple
             onChange={handleFileUpload}
-            className="form-control"
+            className="form-control form-control-lg"
           />
         </div>
         <div className="mb-3">
+          <label className="form-label">
+            <FaSearch /> Search Expenses
+          </label>
           <input
             type="text"
             placeholder="Search expenses"
-            className="form-control"
+            className="form-control form-control-lg"
             onChange={(e) => {
               setSearchTerm(e.target.value.toLowerCase());
             }}
@@ -100,23 +112,50 @@ const ExpenseListRoute: React.FC = () => {
             ?.filter((expense) =>
               expense.filename.toLowerCase().includes(searchTerm)
             )
-            .map((expense) => (
-              <Link
-                key={expense.id}
-                to={`/expenses/${expense.id}`}
-                className="list-group-item text-decoration-none"
-              >
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5 className="mb-1">{expense.filename}</h5>
-                    <p className="mb-1">Status: {expense.status}</p>
+            .map((expense) => {
+              let statusColor;
+              switch (expense.status) {
+                case ExpenseStatus.ANALYZING:
+                  statusColor = "text-warning";
+                  break;
+                case ExpenseStatus.PAID:
+                  statusColor = "text-success";
+                  break;
+                case ExpenseStatus.UNPAID:
+                  statusColor = "text-danger";
+                  break;
+                default:
+                  statusColor = "text-secondary";
+              }
+              return (
+                <Link
+                  key={expense.id}
+                  to={`/expenses/${expense.id}`}
+                  className="list-group-item list-group-item-action flex-column align-items-start"
+                  style={{ backgroundColor: "#f8f9fa", borderColor: "#dee2e6" }}
+                >
+                  <div className="d-flex w-100 justify-content-between">
+                    <h5 className="mb-1 text-success">
+                      <FaFileInvoiceDollar /> {expense.filename}
+                    </h5>
+                    <small className="text-muted">{expense.createdAt}</small>
                   </div>
-                  <span className="badge bg-primary rounded-pill">
-                    {expense.amount}
+                  <p>
+                    Status:{" "}
+                    <span className={`mb-1 ${statusColor}`}>
+                      {expense.status}
+                    </span>
+                  </p>
+                  <small className="text-info">
+                    Vendor: {expense.vendorName}
+                  </small>
+                  <span className="badge bg-primary rounded-pill float-end">
+                    <FaDollarSign />
+                    {expense.amount ?? 0}
                   </span>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
         </div>
       </div>
     </>

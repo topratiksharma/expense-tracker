@@ -47,7 +47,6 @@ export enum ExpenseStatus {
   ANALYZING = "ANALYZING",
   UNPAID = "UNPAID",
   PAID = "PAID",
-  UPLOADING = "UPLOADING",
 }
 
 /**

@@ -19,61 +19,73 @@ const ViewExpense: React.FC = () => {
   }
 
   return (
-    <>
-      <div className="container mt-5">
+    <div className="container mt-5">
       <div className="card shadow-lg">
-        <div className="card-header bg-primary text-white">
+      <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h2 className="mb-0">Expense Detail</h2>
-        </div>
-        <div className="card-body">
-        <p className="card-text">
-          <strong>Name:</strong> {expense.filename}
-        </p>
-        <p className="card-text">
-          <strong>Amount:</strong> ${expense.amount}
-        </p>
-        <p className="card-text">
-          <strong>Status:</strong> 
-          <span className={`badge ${expense.status === ExpenseStatus.PAID ? 'bg-success' : 'bg-warning'}`}>
-          {expense.status}
-          </span>
-        </p>
-        <p className="card-text">
-          <strong>Vendor:</strong> {expense.vendorName}
-        </p>
-        <p className="card-text">
-          <strong>Date:</strong>{" "}
-          {new Date(expense.createdAt).toLocaleDateString()}
-        </p>
-        <div className="d-flex justify-content-between mt-4">
-          <button
-          className="btn btn-success"
+        <div>
+        <button
+          className="btn btn-success me-2"
           onClick={async () => {
-            await client.patchExpense(id, { status: ExpenseStatus.PAID });
-            setExpense({ ...expense, status: ExpenseStatus.PAID });
+          await client.patchExpense(id, { status: ExpenseStatus.PAID });
+          setExpense({ ...expense, status: ExpenseStatus.PAID });
           }}
           disabled={expense.status === ExpenseStatus.PAID}
-          >
-          {expense.status === ExpenseStatus.PAID ? 'Paid' : 'Pay'}
-          </button>
-          <button
+        >
+          {expense.status === ExpenseStatus.PAID ? "Paid" : "Pay"}
+        </button>
+        <button
           className="btn btn-danger"
           onClick={async () => {
-            if (
+          if (
             window.confirm(
-              "Are you sure you want to delete this expense?"
+            "Are you sure you want to delete this expense?"
             )
-            ) {
+          ) {
             await client.deleteExpense(id);
             setExpense(null);
-            }
+          }
           }}
-          >
+        >
           Delete
-          </button>
+        </button>
         </div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+        <div className="col-md-6">
+          <p className="card-text d-flex align-items-center">
+          <strong className="me-2">Name:</strong> {expense.filename}
+          </p>
+          <p className="card-text d-flex align-items-center">
+          <strong className="me-2">Amount:</strong> ${expense.amount}
+          </p>
+          <p className="card-text d-flex align-items-center">
+          <strong className="me-2">Status:</strong>
+          <span
+            className={`badge ${
+            expense.status === ExpenseStatus.PAID
+              ? "bg-success"
+              : "bg-warning"
+            }`}
+          >
+            {expense.status}
+          </span>
+          </p>
+        </div>
+        <div className="col-md-6">
+          <p className="card-text d-flex align-items-center">
+          <strong className="me-2">Vendor:</strong> {expense.vendorName}
+          </p>
+          <p className="card-text d-flex align-items-center">
+          <strong className="me-2">Date:</strong>{" "}
+          {new Date(expense.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+        </div>
+        <div className="d-flex justify-content-end mt-4">
         <button
-          className="btn btn-secondary mt-3"
+          className="btn btn-secondary"
           onClick={() => {
           window.location.href = "/expenses";
           }}
@@ -83,7 +95,7 @@ const ViewExpense: React.FC = () => {
         </div>
       </div>
       </div>
-    </>
+    </div>
   );
 };
 
