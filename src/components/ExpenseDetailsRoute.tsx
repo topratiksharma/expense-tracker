@@ -28,15 +28,11 @@ const ExpenseDetailsRoute: React.FC = () => {
   return (
     <div>
       <h2>Expense Detail</h2>
-      <p>
-        <strong>Name:</strong> {expense.name}
-      </p>
-      <p>
-        <strong>Amount:</strong> ${expense.amount?.toFixed(2)}
-      </p>
-      <p>
-        <strong>Date:</strong> {expense.date}
-      </p>
+      <p><strong>Name:</strong> {expense.filename}</p>
+      <p><strong>Amount:</strong> ${expense.amount}</p>
+      <p><strong>Vendor:</strong> {expense.status}</p>
+      <p><strong>Vendor:</strong> {expense.vendorName}</p>
+      <p><strong>Date:</strong> {expense.createdAt}</p>
     </div>
   );
 };
