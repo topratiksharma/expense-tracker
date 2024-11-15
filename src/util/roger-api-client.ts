@@ -47,6 +47,7 @@ export enum ExpenseStatus {
   ANALYZING = "ANALYZING",
   UNPAID = "UNPAID",
   PAID = "PAID",
+  UPLOADING = "UPLOADING",
 }
 
 /**
@@ -76,7 +77,7 @@ class RogerApiClient {
     await randomWait();
     const storage = this.getExpensesStorage();
     return Object.values(storage).sort((a, b) =>
-      b.createdAt.localeCompare(b.createdAt)
+      b.createdAt.localeCompare(a.createdAt)
     );
   }
 
