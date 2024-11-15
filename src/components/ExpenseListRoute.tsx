@@ -1,8 +1,22 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { client } from "../util/roger-api-client";
 
 const ExpenseListRoute: React.FC = () => {
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<any[]>();
+
+  React.useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const expensesList = await client.listExpenses();
+        setExpenses(expensesList);
+      } catch (error) {
+        console.error("Failed to fetch expenses", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -61,10 +75,10 @@ const ExpenseListRoute: React.FC = () => {
       <h1>Expenses</h1>
       <input type="file" multiple onChange={handleFileUpload} />
       <ul>
-        {expenses.map((expense) => (
+        {expenses?.map((expense) => (
           <li key={expense.id}>
-            <a href={`/expenses/${expense.id}`}>{expense.name}</a>
-            <p>Name: {expense.name}</p>
+            <Link to={`/expenses/${expense.id}`}>{expense.filename}</Link>
+            <p>Name: {expense.filename}</p>
             <p>Status: {expense.status}</p>
           </li>
         ))}

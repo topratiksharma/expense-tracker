@@ -171,6 +171,7 @@ class RogerApiClient {
    *   be called with the `Expense` object that was updated.
    */
   on(eventName: "expenseAnalyzed", listener: (expense: Expense) => void): void;
+  
   on(eventName: string, listener: Listener): void {
     let eventListeners = this.listeners.get(eventName);
     if (!eventListeners) {

@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Switch, Route, Redirect, NavLink } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { ReactComponent as Logo } from "../images/logo-negative.svg";
+import ExpenseDetailsRoute from "./ExpenseDetailsRoute";
 
 const history = createBrowserHistory();
 
@@ -41,6 +42,7 @@ export const App: React.FC = () => {
           <Switch>
             <Route path="/expenses" exact component={ExpenseListRoute} />
             <Route path="/settings" exact component={SettingsRoute} />
+            <Route path="/expenses/:id" component={ExpenseDetailsRoute} />
             <Redirect path="/" exact to="/expenses" />
           </Switch>
         </React.Suspense>
