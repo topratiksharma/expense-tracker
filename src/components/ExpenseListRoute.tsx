@@ -34,6 +34,16 @@ const ExpenseListRoute: React.FC = () => {
             )
           );
           console.log("Uploaded expense for file", details);
+
+          client.on("expenseAnalyzed", (updatedExpense) => {
+            setExpenses((prevExpenses) =>
+              prevExpenses.map((exp) =>
+                exp.id === updatedExpense.id
+                  ? { ...exp, ...updatedExpense }
+                  : exp
+              )
+            );
+          });
         } catch (error) {
           console.error(
             `Failed to upload expense for file: ${file.name}`,
