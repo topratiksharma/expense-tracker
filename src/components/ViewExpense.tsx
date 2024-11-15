@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { client, Expense, ExpenseStatus } from "../util/roger-api-client";
 
-const ExpenseDetailsRoute: React.FC = () => {
+const ViewExpense: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [expense, setExpense] = useState<Expense | null>(null);
 
@@ -73,4 +73,4 @@ const ExpenseDetailsRoute: React.FC = () => {
   );
 };
 
-export default ExpenseDetailsRoute;
+export default ViewExpense;
