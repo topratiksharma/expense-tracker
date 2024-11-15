@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { client, ExpenseStatus } from "../util/roger-api-client";
-
-// interface Expense {
-//   id: number;
-//   name: string;
-//   amount: number;
-//   date: string;
-// }
+import { client, Expense, ExpenseStatus } from "../util/roger-api-client";
 
 const ExpenseDetailsRoute: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [expense, setExpense] = useState<any | null>(null);
+  const [expense, setExpense] = useState<Expense | null>(null);
 
   useEffect(() => {
     const fetchExpense = async () => {
@@ -46,7 +39,7 @@ const ExpenseDetailsRoute: React.FC = () => {
       <button
         onClick={async () => {
           await client.patchExpense(id, { status: ExpenseStatus.PAID });
-          setExpense({ ...expense, status: "Paid" });
+          setExpense({ ...expense, status: ExpenseStatus.PAID });
         }}
       >
         Pay

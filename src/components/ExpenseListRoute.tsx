@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { client } from "../util/roger-api-client";
+import { client, Expense, ExpenseStatus } from "../util/roger-api-client";
 
 const ExpenseListRoute: React.FC = () => {
-  const [expenses, setExpenses] = useState<any[]>();
+  const [expenses, setExpenses] = useState<Expense[]>();
 
   React.useEffect(() => {
     const fetchExpenses = async () => {
@@ -26,19 +26,18 @@ const ExpenseListRoute: React.FC = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         try {
-          const expense = {
+          const expense: Expense = {
             id: file.name,
-            name: file.name,
-            status: "Uploading",
             createdAt: new Date().toLocaleString(),
             vendorName: "Unknown",
-            amount: 0,
+            amount: "0",
+            status: ExpenseStatus.ANALYZING,
             filename: file.name,
           };
-          setExpenses((prevExpenses) => [...prevExpenses, expense]);
+          setExpenses((prevExpenses) => [...(prevExpenses || []), expense]);
           const details = await client.uploadExpense(file);
           setExpenses((prevExpenses) =>
-            prevExpenses.map((exp) =>
+            prevExpenses?.map((exp) =>
               exp.id === file.name
                 ? {
                     ...exp,
@@ -53,7 +52,7 @@ const ExpenseListRoute: React.FC = () => {
 
           client.on("expenseAnalyzed", (updatedExpense) => {
             setExpenses((prevExpenses) =>
-              prevExpenses.map((exp) =>
+              prevExpenses?.map((exp) =>
                 exp.id === updatedExpense.id
                   ? { ...exp, ...updatedExpense }
                   : exp
