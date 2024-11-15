@@ -116,7 +116,7 @@ const ExpenseListRoute: React.FC = () => {
               let statusColor;
               switch (expense.status) {
                 case ExpenseStatus.ANALYZING:
-                  statusColor = "text-warning";
+                  statusColor = "text-info";
                   break;
                 case ExpenseStatus.PAID:
                   statusColor = "text-success";
@@ -132,10 +132,10 @@ const ExpenseListRoute: React.FC = () => {
                   key={expense.id}
                   to={`/expenses/${expense.id}`}
                   className="list-group-item list-group-item-action flex-column align-items-start"
-                  style={{ backgroundColor: "#f8f9fa", borderColor: "#dee2e6" }}
+                  style={{ backgroundColor: "#f0f4f8", borderColor: "#d1e3f0" }}
                 >
                   <div className="d-flex w-100 justify-content-between">
-                    <h5 className="mb-1 text-success">
+                    <h5 className="mb-1 text-primary">
                       <FaFileInvoiceDollar /> {expense.filename}
                     </h5>
                     <small className="text-muted">{expense.createdAt}</small>
@@ -146,7 +146,7 @@ const ExpenseListRoute: React.FC = () => {
                       {expense.status}
                     </span>
                   </p>
-                  <small className="text-info">
+                  <small className="text-muted">
                     Vendor: {expense.vendorName}
                   </small>
                   <span className="badge bg-primary rounded-pill float-end">

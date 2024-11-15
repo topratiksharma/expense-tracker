@@ -73,7 +73,7 @@ const ViewExpense: React.FC = () => {
               </p>
               <p className="card-text d-flex align-items-center">
                 <FaDollarSign className="me-2" />
-                <strong className="me-2">Amount:</strong> ${expense.amount}
+                <strong className="me-2">Amount:</strong> {expense.amount ?? 0}
               </p>
               <p className="card-text d-flex align-items-center">
                 <FaInfoCircle className="me-2" />
